@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>계산기 요청</h1>
+<!-- <form action="http://localhost:8080/servlettest/calc"> 절대경로 표현-->
+<!-- <form action="calc"> 상대경로 표현-->
+<form action="/servlettest/calc"> <!-- 현서버루트 (http://ip:port) 기준 -->
+<!-- 숫자 1 <input type=number name=su1><br> -->
+
+<input type=radio value="+" name=op>+
+<input type=radio value="-" name=op>-
+<input type=radio value="*" name=op>*
+<input type=radio value="/" name=op>/
+
+숫자 2 <input type=number name=su2><br>
+<a rel="">
+여러개 선택가능 
+<input type="checkbox" value="+" name="multipleop">+
+<input type="checkbox" value="-" name="multipleop">-
+<input type="checkbox" value="*" name="multipleop">*
+<input type="checkbox" value="/" name="multipleop">/
+<!-- 같은 name 속성에 여러개의 value 값 가지는 input tag -->
+<input type=submit value="계산해주세요">
+</form>
+</body>
+</html>
