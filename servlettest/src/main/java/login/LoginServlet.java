@@ -28,6 +28,12 @@ public class LoginServlet extends HttpServlet {
 	}
 	
 	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
+	}
+
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		makeMap();
 		String id = null;
