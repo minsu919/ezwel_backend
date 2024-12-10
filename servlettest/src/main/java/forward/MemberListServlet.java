@@ -1,5 +1,6 @@
-package db;
+package forward;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,7 +13,7 @@ import dao.MemberDAO;
 import dto.MemberDTO;
 
 
-@WebServlet("/memberlist")
+//@WebServlet("/list")
 public class MemberListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,22 +26,10 @@ public class MemberListServlet extends HttpServlet {
 		
 		MemberDAO dao = new MemberDAO();
 		ArrayList<MemberDTO> list = dao.getMembers(page, cntOfPage);
-		String result = "<style> td {border:2px solid pink}  </style>";
-		result += "<table style='border:2px solid blue'>";
 		
-		for(MemberDTO dto : list) {
-			result += "<tr>";
-			result +="<td style='border:2px solid pink'>" + dto.getId() + "</td>";
-			result +="<td>" + dto.getName() + "</td>";
-			result +="<td>" + dto.getPhone() + "</td>";
-			result +="<td>" + dto.getEmail() + "</td>";
-			result +="<td>" + dto.getRegdate() + "</td>";
-			result += "</tr>";
-		}
-		
-		result += "</table>";
-		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().println(result);
+		request.setAttribute("list", list);
+		RequestDispatcher rd = request.getRequestDispatcher("/forward2");
+		rd.forward(request, response);
 	}
 
 }

@@ -11,7 +11,15 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  
+  <context-param>
+  	<param-name>account</param-name>
+  	<param-value>c##jdbc</param-value>
+  </context-param>
+  <!-- membermenu -->
+  <context-param> 
+	<param-name>membermenu</param-name> 
+	<param-value>회원가입 로그인 내정보조회및수정 회원탈퇴 페이징조회 검색조회</param-value> 
+  </context-param>
     <servlet>
     <description></description>
     <display-name>FirstServlet</display-name>
@@ -21,5 +29,24 @@ xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/n
   <servlet-mapping>
     <servlet-name>FirstServlet</servlet-name>
     <url-pattern>/second</url-pattern>
+  </servlet-mapping>
+  
+      <servlet>
+    <description></description>
+    <display-name>Servlet</display-name>
+    <servlet-name>ConfigServlet2</servlet-name>
+    <servlet-class>config.ConfigServlet2</servlet-class>
+    <init-param>
+    	<param-name>account</param-name>
+    	<param-value>c##jdbc</param-value>
+    </init-param>
+    <init-param>
+    	<param-name>password</param-name>
+    	<param-value>jdbc</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ConfigServlet2</servlet-name>
+    <url-pattern>/config2</url-pattern>
   </servlet-mapping>
 </web-app>
