@@ -21,9 +21,14 @@ public class MemberDAO {
 		//dto 변수 전달 모든 내용을 members 테이블에 저장 구현
 		Connection con = null;
 		try {
-		Class.forName(DBInfo.driver);
-		con = DriverManager.getConnection
-				(DBInfo.url, DBInfo.account, DBInfo.password);
+//		Class.forName(DBInfo.driver);
+//		con = DriverManager.getConnection
+//				(DBInfo.url, DBInfo.account, DBInfo.password);
+			
+		Context context = new InitialContext(); // context.xml 파일 설정내용 객체
+		Context env = (Context)context.lookup("java:/comp/env");
+		DataSource ds =(DataSource)env.lookup("jdbc/mydb");
+		con = ds.getConnection();
 		System.out.println("db 연결 성공");
 			
 		//dto.getId() members  테이블 중복 검사
@@ -52,9 +57,13 @@ public class MemberDAO {
 		System.out.println("db 연결 해제 성공");
 		//
 		}
-		catch(ClassNotFoundException e) {
+		/*catch(ClassNotFoundException e) {
 			System.out.println("잘못된 드라이버이름 혹은 classpath 잘못되었을 수 있습니다.");
 			System.out.println("module-info.java 미설정 확인하세요 ");
+		}*/
+		
+		catch(NamingException e) {
+			System.out.println("context.xml 데이터베이스설정 미작성");
 		}
 		catch(SQLException e) {
 			System.out.println("db 연결 실패-연결 정보를 확인하세요");

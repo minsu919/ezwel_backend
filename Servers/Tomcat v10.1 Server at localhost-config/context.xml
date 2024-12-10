@@ -26,4 +26,18 @@
     <!--
     <Manager pathname="SESSIONS.ser" />
     -->
+   <Resource
+   driverClassName = "oracle.jdbc.driver.OracleDriver"
+   url = "jdbc:oracle:thin:@127.0.0.1:1521:xe"
+   username = "c##jdbc"
+   password = "jdbc"
+   
+   maxTotal = "8"
+   maxIdle = "3"
+   maxWaitMillis = "-1"
+   type = "javax.sql.DataSource"
+   auth = "Container"
+   name = "jdbc/mydb"
+   /> 
+    
 </Context>
