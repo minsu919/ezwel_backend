@@ -13,7 +13,7 @@ import dao.MemberDAO;
 import dto.MemberDTO;
 
 
-//@WebServlet("/list")
+@WebServlet("/forwardlist")
 public class MemberListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

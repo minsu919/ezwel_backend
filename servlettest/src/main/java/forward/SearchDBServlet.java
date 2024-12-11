@@ -14,7 +14,7 @@ import dao.MemberDAO;
 import dto.MemberDTO;
 
 
-//@WebServlet("/search")
+@WebServlet("/forwardsearch")
 public class SearchDBServlet extends HttpServlet {
 
 	
