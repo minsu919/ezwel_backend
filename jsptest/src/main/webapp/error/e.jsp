@@ -1,7 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8"
-	isErrorPage="true" 
-%>
-<!-- 내장객체 exception 사용가능 -->
+<%@ page contentType="text/html; charset=UTF-8" isErrorPage="true"%>
+ <%--exception 내장객체 사용가능 --%>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +10,9 @@
 
 <h3>오류발생jsp=<%=request.getAttribute("file") %></h3>
 <h3>오류발생원인=<%=request.getAttribute("errormessage") %></h3>
+
 <h3><%=exception %></h3>
 <h3><%=exception.getMessage() %></h3>
-<%exception.printStackTrace(); %>
+<% exception.printStackTrace(); %>
 </body>
 </html>

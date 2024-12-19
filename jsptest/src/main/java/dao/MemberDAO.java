@@ -21,14 +21,14 @@ public class MemberDAO {
 		//dto 변수 전달 모든 내용을 members 테이블에 저장 구현
 		Connection con = null;
 		try {
-//		Class.forName(DBInfo.driver);
-//		con = DriverManager.getConnection
-//				(DBInfo.url, DBInfo.account, DBInfo.password);
-			
-		Context context = new InitialContext(); // context.xml 파일 설정내용 객체
-		Context env = (Context)context.lookup("java:/comp/env");
-		DataSource ds =(DataSource)env.lookup("jdbc/mydb");
-		con = ds.getConnection();
+		/*Class.forName(DBInfo.driver);
+		con = DriverManager.getConnection
+				(DBInfo.url, DBInfo.account, DBInfo.password);
+				*/
+			Context context = new InitialContext(); // context.xml 파일 설정내용 객체
+			Context env = (Context)context.lookup("java:/comp/env"); // "연관설정 가져오는 접두어
+			DataSource ds = (DataSource)env.lookup("jdbc/mydb");// 미리 con 몇개 생성
+			con = ds.getConnection();
 		System.out.println("db 연결 성공");
 			
 		//dto.getId() members  테이블 중복 검사
@@ -61,7 +61,6 @@ public class MemberDAO {
 			System.out.println("잘못된 드라이버이름 혹은 classpath 잘못되었을 수 있습니다.");
 			System.out.println("module-info.java 미설정 확인하세요 ");
 		}*/
-		
 		catch(NamingException e) {
 			System.out.println("context.xml 데이터베이스설정 미작성");
 		}
@@ -190,6 +189,7 @@ public class MemberDAO {
 		PreparedStatement pt2 = con.prepareStatement(selectSQL);
 		pt2.setString(1, id);
 		ResultSet rs = pt2.executeQuery();
+
 		if(rs.next()) {//회원 존재
 			if(pw == rs.getInt("pw")) {//암호 같으면
 				dto = new MemberDTO();
@@ -318,10 +318,7 @@ public class MemberDAO {
 		return list;
 
 	}//getMembers(int, int) end	
-	
-	
-	
-	public ArrayList<MemberDTO> getMembers(String[] items, String word) {
+	public ArrayList<MemberDTO> getMembers(String item[], String word) {
 		ArrayList<MemberDTO> list = new ArrayList<MemberDTO>();
 
 		Connection con = null;
@@ -331,19 +328,17 @@ public class MemberDAO {
 				(DBInfo.url, DBInfo.account, DBInfo.password);
 		System.out.println("db 연결 성공");
 		
-		String selectSQL = "select * from members where " + items[0] + " like ?";
-		for (int i=1; i<items.length; i++) {
-			selectSQL += " or " + items[i] + " like ?";
+		
+		String selectSQL = "select * from members where " + item[0] + " like ? ";
+		for(int i= 1; i < item.length; i++) {
+			selectSQL += "or " + item[i] + " like ? "; 
 		}
+		
 		System.out.println(selectSQL);
-		
-		
 		PreparedStatement pt2 = con.prepareStatement(selectSQL);
-		
-		for (int i=1; i<=items.length; i++) {
-			pt2.setString(i,  "%" + word + "%");		
+		for(int i= 1; i <= item.length; i++) {
+			pt2.setString(i,  "%"+word+"%");//index번호 1~ 부터 length개까지임
 		}
-		
 		ResultSet rs = pt2.executeQuery();//rs 생성되면 첫번째 레코드 참조하는 것이 아니다
 		
 		while(rs.next()) {
@@ -374,13 +369,19 @@ public class MemberDAO {
 		}
 		return list;
 
-	}//getMembers(int, int) end
-	
+	}//getMembers(String[], String) end		
+
 	public static void main(String args[]) {
-		// MemberDAO - java application 실행
-		ArrayList<MemberDTO> list = new MemberDAO().getMembers(new String[] {"id", "name"}, "김");
+		ArrayList<MemberDTO> list = new MemberDAO().getMembers(new String[] {"id", "name", "phone", "email"}, "1");
 		System.out.println(list);
-	}
+		ArrayList<MemberDTO> list2 = new MemberDAO().getMembers(new String[] {"id", "name", "email"}, "db");
+		System.out.println(list2);
+		ArrayList<MemberDTO> list3 = new MemberDAO().getMembers(new String[] {"id", "name", }, "한국");
+		System.out.println(list3);
+		ArrayList<MemberDTO> list4 = new MemberDAO().getMembers(new String[] {"id"}, "jdbc");
+		System.out.println(list4);
+		
+	}	
 
 }//class end
 

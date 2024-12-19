@@ -1,5 +1,10 @@
 package board;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -9,68 +14,65 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 @WebServlet("/board")
 public class BoardServlet extends HttpServlet {
-	ArrayList<BoardDTO> boardlist = new ArrayList<>();
+	ArrayList<BoardDTO> boardlist;
+	//http://ip:port/jsptest/bord
+   //http://ip:port/jsptest/bord?action=list
+	//http://ip:port/jsptest/board?action=write&userid=testid 
+	//http://ip:port/jsptest/board?action=detail&seq=1
 	
-	
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String jspfile = "";
+		//1. action 파라미터 값 읽자
+		String action = req.getParameter("action");
+		if(action == null || action.equals("list")) {
+			req.setAttribute("boardlist", boardlist);//forward된 파일까지 공유
+			jspfile="/board/boardlist.jsp";
+		}
+		//2. write  이면 userid 파라미터 값 읽자
+		else if(action.equals("write") && req.getParameter("userid")!= null) {
+			HttpSession session = req.getSession();
+			session.setAttribute("userid", req.getParameter("userid"));//forward파일+동일 브라우저 동작 파일들 공유
+			jspfile = "/board/boardwriteform.jsp";
+		}
+		//3. detail 이면 seq 파라미터 값 읽자
+		else if(action.equals("detail") && req.getParameter("seq")!= null) {
+			int seq = Integer.parseInt(req.getParameter("seq"));
+			for(BoardDTO dto : boardlist) {
+				if(dto.getSeq() == seq) { //board내부에서 seq 중복 게시물 없다 가정하고
+					req.setAttribute("board", dto);
+					break;
+				}
+			}
+			jspfile = "/board/boarddetail.jsp";
+		}
+		
+		RequestDispatcher rd =  req.getRequestDispatcher(jspfile);
+		rd.forward(req, resp);
+	}
+
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		
+		boardlist = new ArrayList();
 		boardlist.add(new BoardDTO(1, "게시물1", "게시물 1의 내용입니다", "id1"));
 		boardlist.add(new BoardDTO(2, "게시물2", "게시물 2의 내용입니다", "id2"));
 		boardlist.add(new BoardDTO(3, "게시물3", "게시물 3의 내용입니다", "id3"));
 		boardlist.add(new BoardDTO(4, "게시물4", "게시물 4의 내용입니다", "id4"));
 		boardlist.add(new BoardDTO(5, "게시물5", "게시물 5의 내용입니다", "id5"));
-		
-	}
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		if (
-				request.getParameter("seq") != null
-				&& request.getParameter("title") != null
-				&& request.getParameter("contents") != null
-				&& request.getParameter("userid") != null ) {
-			int seq = Integer.parseInt(request.getParameter("seq"));
-			String title = request.getParameter("title");
-			String contents = request.getParameter("contents");
-			String userId = request.getParameter("userid");
-			System.out.println("어 파라미터 읽어왔다");
-			boardlist.add(new BoardDTO(seq, title, contents, userId));
-			System.out.println("어 리스트에 추가했다");
-			
-		}
-		
-		HttpSession session = request.getSession();
-		RequestDispatcher rd = null;
-		session.setAttribute("list",boardlist);
-		System.out.println(boardlist);
-		String action = "", userId = "";
-		
-		int seq = -1;
-		
-		if (request.getParameter("action") != null) {
-			action = request.getParameter("action");
-			
-			if (action.equals("list")) {
-				rd = request.getRequestDispatcher("board/boardlist.jsp");
-			} else if (action.equals("write") && request.getParameter("userid") != null) {
-				userId = request.getParameter("userid");
-				session.setAttribute("userid",userId);
-				rd = request.getRequestDispatcher("board/boardwriteform.jsp");
-			} else if (action.equals("detail") && request.getParameter("seq") != null) {
-				seq = Integer.parseInt(request.getParameter("seq"));
-				session.setAttribute("seq",seq);
-				rd = request.getRequestDispatcher("board/boarddetail.jsp");
-			}
-			rd.forward(request, response);
-		}
-		
-		
+		Map<String, String[]> category = new HashMap();
+		category.put("의류", new String[] {"남성의류", "여성의류","아동의류","유아의류","스포츠의류"});
+		category.put("식품", new String[] {"냉동", "과일","축산","음료","과자"});
+		category.put("가전", new String[] {"소형가전", "주방가전","오디오/비디오"});
+		category.put("학용품", new String[] {"미술용품", "필기류","포장지류"});
 	}
 
 }
+
+
+
+
+
+
+
+

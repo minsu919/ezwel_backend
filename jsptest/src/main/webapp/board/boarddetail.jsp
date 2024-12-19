@@ -1,5 +1,3 @@
-<%@page import="board.BoardDTO"%>
-<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -9,21 +7,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%
-BoardDTO target = null;
-int seq = (Integer)session.getAttribute("seq");
-ArrayList<BoardDTO> boardList = (ArrayList<BoardDTO>)session.getAttribute("list");
-for (BoardDTO dto : boardList){
-	if (dto.getSeq() == seq){
-		target = dto;
-		break;
-	}
-}
-if (target == null){
-	out.println("<h3>게시물이 존재하지 않습니다.</h3>");
-} else {
-	out.println(target);
-}
-%>
+<h1><%=request.getParameter("seq") %> 번의 게시물 검색</h1>
+<%-- <%= request.getAttribute("board") %> --%>
+
+<jsp:useBean id="board" class="board.BoardDTO" scope="request" />
+번호:<jsp:getProperty property="seq" name="board"/><br>
+작성자:<jsp:getProperty property="writer" name="board"/><br>
+제목:<jsp:getProperty property="title" name="board"/><br>
+내용:<jsp:getProperty property="contents" name="board"/><br>
 </body>
 </html>

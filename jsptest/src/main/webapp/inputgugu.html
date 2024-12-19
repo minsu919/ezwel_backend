@@ -3,29 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="/servlettest/js/jquery-3.7.1.min.js"></script>
+<SCRIPT src="/servlettest6/js/jquery-3.7.1.min.js"></SCRIPT>
 <script>
 $(document).ready(function(){
 	$("form").on('submit', function(event){
-		let start = $("#startdan").val();
-		let end = $("#enddan").val();
-		if (start <= end && start >= 2 && start <= 9 && end >= 2 && end <= 9){
-			;
-		} 
-		else {
-			event.preventDefault();
-			$("#result").html(start + ":" + end +  " >> 입력값을 다시 확인하세요");
+		let start = $("#start").val();
+		let end = $("#end").val();	
+		if(start <= end && start >= 2 && start <= 9 && end >= 2 && end <= 9){
+			
 		}
-	}); //on
+		else{
+			event.preventDefault();
+			$("#result").html("입력값을 다시 확인하세요");
+			
+		}
+	});//on
 });
 </script>
 </head>
 <body>
-<h2>구구단</h2>
-<form action=outputgugu.jsp method="post">
-	시작단:<input type=text name=startdan id="startdan"><br>
-	종료단:<input type=text name=enddan id="enddan"><br>
-	<input type=submit value='구구단 출력'>
+<h1>구구단</h1>
+<form action="outputgugu.jsp" method=post ><!-- outputgugu.jsp - get+Post -->
+시작단:<input type=number name="start" id="start"><br>
+종료단:<input type=number name="end" id="end"><br>
+<input type=submit value="구구단">
 </form>
 <div id="result"></div>
 </body>

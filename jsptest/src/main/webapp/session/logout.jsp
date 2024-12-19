@@ -8,17 +8,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-<% if (session.getAttribute("sessionmember") != null){
-	//로그인 한 적 있다. 암호 다를 수 있다.
+<%
+if(session.getAttribute("sessionmember") != null){
+	//로그인한적 있다. 암호 다를 수도 있다.
 	MemberDTO dto = (MemberDTO)session.getAttribute("sessionmember");
 	out.println(dto.getId() + " 회원님 로그아웃하셨습니다. ");
-	session.invalidate(); // session.removeAttribute("sessionmember");
+	session.removeAttribute("sessionmember");
 }
-	
-	
-	
-	
 %>
-
 </body>
 </html>

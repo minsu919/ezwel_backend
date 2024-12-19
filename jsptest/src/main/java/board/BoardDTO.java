@@ -1,24 +1,8 @@
 package board;
 
 public class BoardDTO {
-	int seq;
+	int seq; 
 	String title, contents , writer;
-	
-	public BoardDTO() {}
-	
-	public BoardDTO(int seq, String title, String contents, String writer) {
-		super();
-		this.seq = seq;
-		this.title = title;
-		this.contents = contents;
-		this.writer = writer;
-	}
-	
-	@Override
-	public String toString() {
-		return seq + " | " + title + " | " + contents+ " | " + writer + "\n";
-	}
-	
 	public int getSeq() {
 		return seq;
 	}
@@ -43,5 +27,18 @@ public class BoardDTO {
 	public void setWriter(String writer) {
 		this.writer = writer;
 	}
+	@Override
+	public String toString() {
+		return "BoardDTO [seq=" + seq + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+	}
+	public BoardDTO() {	}
+	public BoardDTO(int seq, String title, String contents, String writer) {
+		super();
+		this.seq = seq;
+		this.title = title;
+		this.contents = contents;
+		this.writer = writer;
+	} 
+
 
 }

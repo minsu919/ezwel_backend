@@ -9,12 +9,11 @@
 </head>
 <body>
 <%="출력" %>
-<%out.println("출력2"); %>
+<% out.println("출력2");   %>
 <%! public void test(int i, PageContext pc) throws IOException{
-	pc.getOut().println(i+i);
+	pc.getOut().println(i+i); 
 }
 %>
-<%test(10,pageContext); %>
-
+<% test(10, pageContext); %>
 </body>
 </html>

@@ -7,10 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>게시물 리스트를 보여드립니다.</h1>
-<jsp:include page="footer.jsp">
-	<jsp:param name="imagename" value="../images/html5.png"/>
-	<jsp:param name="jspname" value="<%=request.getServletPath() %>"/>
+<h1>게시물리스트를 보여드립니다.</h1>
+<jsp:include page="footer.jsp" >
+	<jsp:param name="imagename" value="../images/html5.jpg" />
+	<jsp:param name="jspname" value="<%=request.getServletPath() %>" />
 </jsp:include>
 </body>
 </html>

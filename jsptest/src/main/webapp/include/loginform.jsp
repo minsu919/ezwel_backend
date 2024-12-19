@@ -12,12 +12,12 @@
 <h1>로그인 화면입니다.</h1>
 <%
 MemberDAO dao = new MemberDAO();
-MemberDTO dto = dao.getMember("test2", 55555);
+MemberDTO dto = dao.getMember("servlet1", 11111);
 %>
-<h3><%=dto.getId() %> 회원님 로그인되었습니다.</h3>
-<jsp:include page="footer.jsp">
-	<jsp:param name="imagename" value="../images/google.png"/>
-	<jsp:param name="jspname" value="<%=request.getServletPath() %>"/>
+<h3><%=dto.getId() %> 회원님 로그인되었습니다</h3>
+<jsp:include page="footer.jsp" >
+	<jsp:param name="imagename" value="../images/google.png" />
+	<jsp:param name="jspname" value="<%=request.getServletPath() %>" />	
 </jsp:include>
 </body>
 </html>

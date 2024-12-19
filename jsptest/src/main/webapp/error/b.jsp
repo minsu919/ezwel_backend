@@ -7,10 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%request.setAttribute("file", request.getRequestURI());
+<% request.setAttribute("file", request.getRequestURI());
 request.setAttribute("errormessage", "0-3 값이어야 합니다");
-String[] menus = {"회원관리","게시판관리","쇼핑몰관리","챗봇관리"};
-int index = Integer.parseInt(request.getParameter("menu"));
+String [] menus = {"회원관리", "게시판관리", "쇼핑몰관리", "챗봇관리"} ; 
+int index = Integer.parseInt(request.getParameter("menu")); 
 %>
 <h3>선택한 메뉴=<%=menus[index] %></h3>
 </body>

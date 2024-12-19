@@ -9,14 +9,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%
-ArrayList<BoardDTO> boardList = (ArrayList<BoardDTO>)session.getAttribute("list");
-out.println("<h1>게시물리스트</h1>");
-for (BoardDTO dto : boardList){
-	out.println("<p>");
-	out.println(dto);
-	out.println("</p><hr>");
-}
-%>
+<h1>게시물 리스트입니다.</h1>
+<%-- <% ArrayList<BoardDTO> boardlist = 
+(ArrayList<BoardDTO>) request.getAttribute("boardlist"); %>
+<h3><%=boardlist %></h3> --%>
+
+<jsp:useBean id="boardlist" class="java.util.ArrayList" scope="request"/>
+<h3><%=boardlist %></h3>
+
+
 </body>
 </html>

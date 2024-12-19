@@ -7,32 +7,40 @@
 <title>Insert title here</title>
 </head>
 <body>
+<% 
+if(request.getMethod().equals("POST")){
+int start = Integer.parseInt(request.getParameter("start"));
+int end = Integer.parseInt(request.getParameter("end"));
+if(start <= end && start >= 2 && start <= 9 && end >= 2 && end <= 9){
+	//조건에 맞을때 구구단 출력
+}
+else{
+	//조건에 맞지 않을때 구구단 미출력
+}
+%>
+<table border=1>
 <%
-if (request.getMethod().equals("POST")){
-int start = Integer.parseInt(request.getParameter("startdan"));
-int end = Integer.parseInt(request.getParameter("enddan"));
+for(int i = 1; i <= 9; i++){  //2*1 ~ 2*9
 %>
-<table border="3">
-<%for (int i=start; i<=end; i++){
-%>
-<tr>
+	<tr>
 <%
-	for (int j=1; j<=9; j++){
+	for(int dan = start; dan <=end; dan++){
 %>
-<%= "<td>" + i + " x " + j + " = " + j*i + "</td>" %>
+
+		<td><%= dan + "*" + i + "=" + dan*i %></td>
+<%
+	}
+%>
+	</tr>
 <%
 }
-%>	
-</tr>	
-<%
-}
-} // if end
+}//IF END
 else{
 %>
-<h3> 요청방식 오류 </h3>
+	<h3>요청방식 오류</h3>
 <%
 }
-%> 
+%>
 </table>
 </body>
 </html>
