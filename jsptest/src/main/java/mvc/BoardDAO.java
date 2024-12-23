@@ -13,6 +13,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import dao.DBInfo;
+import dto.MemberDTO;
 
 
 public class BoardDAO {
@@ -80,7 +81,7 @@ public class BoardDAO {
 		String selectSQL = 
 		"select seq, title, writer, viewcount "
 		+ "	from(select rownum r,  imsi.* "
-		+ " from (select * from board order by writingtime desc) imsi)" 
+		+ " from (select * from board order by seq desc) imsi)" 
 		+ " where r between ? and ?";
 		 
 		int start = (page-1)*count + 1;
@@ -129,21 +130,23 @@ public class BoardDAO {
 		
 		// 조회수 증가 처리
 		String updateSQL = "update board set viewcount = viewcount + 1 where seq = ? ";
-		PreparedStatement pt1 = con.prepareStatement(updateSQL);
-		pt1.setInt(1,  seq);
-		ResultSet rs = pt1.executeQuery();//rs 생성되면 첫번째 레코드 참조하는 것이 아니다
-		rs.next();
+		PreparedStatement pt2 = con.prepareStatement(updateSQL);
+		pt2.setInt(1,  seq);
+		pt2.executeUpdate();//rs 생성되면 첫번째 레코드 참조하는 것이 아니다
 		// 조회수 증가 처리
 
 		String selectSQL = 
-		"select seq, title, contents, writer, viewcount, writingtime, pw"
+		"select seq, title, contents, writer, viewcount, pw,"
+		+ " writingtime"
 		+ "	from board "
 		+ " where seq = ?";
 		 
-		PreparedStatement pt2 = con.prepareStatement(selectSQL);
+		pt2 = con.prepareStatement(selectSQL);
 		pt2.setInt(1,  seq);
+		ResultSet rs = pt2.executeQuery();
 		rs = pt2.executeQuery();//rs 생성되면 첫번째 레코드 참조하는 것이 아니다
-		rs.next();
+		
+		if(rs.next()) {
 		dto.setSeq(rs.getInt("seq"));
 		dto.setTitle(rs.getString("title"));
 		dto.setContents(rs.getString("contents"));
@@ -151,7 +154,11 @@ public class BoardDAO {
 		dto.setViewCount(rs.getInt("viewcount"));
 		dto.setWritingTime(rs.getString("writingtime"));
 		dto.setWritepw(rs.getInt("pw"));
-		
+		}
+		else {
+			//BoardDTO is null
+		}
+		con.commit();
 		con.close();
 		System.out.println("db 연결 해제 성공");
 		}catch(Exception e) {
@@ -167,6 +174,85 @@ public class BoardDAO {
 		}
 		return dto;
 	}
+	
+	public String updateBoard(BoardDTO dto, int seq) {
+		
+		String msg = "";
+		
+		System.out.println(dto.getTitle());
+		System.out.println(dto.getContents());
+		Connection con = null;
+		try {
+		Context context = new InitialContext(); // context.xml 파일 설정내용 객체
+		Context env = (Context)context.lookup("java:/comp/env"); // "연관설정 가져오는 접두어
+		DataSource ds = (DataSource)env.lookup("jdbc/mydb");// 미리 con 몇개 생성
+		con = ds.getConnection();
+		System.out.println("db 연결 성공");
+		
+		String updateSql = "update board set title = ?, contents = ?, writingtime = sysdate where seq = ?";
+		PreparedStatement pt2 = con.prepareStatement(updateSql);
+		pt2.setString(1, dto.getTitle()); 
+		pt2.setString(2, dto.getContents());
+		pt2.setInt(3, dto.getSeq());
+		pt2.executeUpdate();
+		msg = "update 성공";
+		
+		con.commit();
+		con.close();
+		System.out.println("db 연결 해제 성공");
+		//
+		}catch(Exception e) {
+			System.out.println("db 연결 실패-연결 정보를 확인하세요");
+			e.printStackTrace();//오류발생원인 추적하여 출력
+			msg = "update 실패";
+		}finally {
+			try {
+				if(!con.isClosed()) {
+					con.close();
+					System.out.println("finally - db 연결 해제 성공");
+				}
+			}catch(Exception e) {}
+		}
+		return msg;
+		
+		
+	}
+	
+	public String deleteBoard(int seq) {
+		String msg = "";
+		//dto 변수 전달 모든 내용을 members 테이블에 저장 구현
+		Connection con = null;
+		try {
+			Context context = new InitialContext(); // context.xml 파일 설정내용 객체
+			Context env = (Context)context.lookup("java:/comp/env"); // "연관설정 가져오는 접두어
+			DataSource ds = (DataSource)env.lookup("jdbc/mydb");// 미리 con 몇개 생성
+			con = ds.getConnection();
+			System.out.println("db 연결 성공");
+		
+		
+			String deleteSQL = "delete from board where seq=?";
+			PreparedStatement pt = con.prepareStatement(deleteSQL);
+			pt.setInt(1, seq);
+			pt.executeUpdate();
+			msg = "성공적으로 삭제처리되었습니다.";
+		
+			con.close();
+			System.out.println("db 연결 해제 성공");
+			//
+		}catch(Exception e) {
+			System.out.println("db 연결 실패-연결 정보를 확인하세요");
+			e.printStackTrace();//오류발생원인 추적하여 출력
+		}finally {
+			try {
+				if(!con.isClosed()) {
+					con.close();
+					System.out.println("finally - db 연결 해제 성공");
+				}
+			}catch(Exception e) {}
+		}
+		return msg;
+	}//deleteMember end
+	
 	
 	public int getTotalCount() {
 		int total = 0;

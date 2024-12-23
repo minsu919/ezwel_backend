@@ -81,6 +81,26 @@ public class BoardServlet extends HttpServlet {
 				request.setAttribute("board",boardDTO);
 				jsp = "/mvc/boarddetail.jsp";
 			}
+			else if (request.getParameter("menu").equals("boardupdate")) {
+				int seq = Integer.parseInt(request.getParameter("seq"));
+				String updateTitle = request.getParameter("title");
+				String updateContents = request.getParameter("contents");
+				BoardDAO boardDAO = new BoardDAO();
+				BoardDTO dto = boardDAO.getDetail(seq);
+				dto.setTitle(updateTitle);
+				dto.setContents(updateContents);
+				String updateResult = boardDAO.updateBoard(dto,seq);
+				System.out.println(updateResult);
+				jsp = "boardstart?menu=boardlist&page=1";
+			}//else
+			else if (request.getParameter("menu").equals("boarddelete")) {
+				int seq = Integer.parseInt(request.getParameter("seq"));
+				BoardDAO boardDAO = new BoardDAO();
+				String delResult = boardDAO.deleteBoard(seq);
+				System.out.println(delResult);
+				
+				jsp = "/mvc/boardstart.jsp";
+			}
 		}//else
 		RequestDispatcher rd = request.getRequestDispatcher(jsp);
 		rd.forward(request, response);
