@@ -59,14 +59,12 @@ public class BoardServlet extends HttpServlet {
 				BoardDAO boardDAO = new BoardDAO();
 				BoardDTO boardDTO = new BoardDTO(title, contents, writepw, writer);
 				String result  = boardDAO.insertBoard(boardDTO);
-				if (result != null ) { // 현재 result는 항상 not null, 의미없음
-					jsp = "/mvc/boardstart.jsp";
-				}
+				jsp = "/mvc/boardstart.jsp";
 			}
 			else if (request.getParameter("menu").equals("boardlist")) {
 				BoardDAO boardDAO = new BoardDAO();
 				int page = Integer.parseInt(request.getParameter("page"));
-				int count = 4;
+				int count = 3;
 				ArrayList<BoardDTO> boardList = boardDAO.getBoardList(page, count); // 토탈  10 / 4 올림
 				if (boardList != null) {
 					request.setAttribute("boardlist", boardList);
@@ -75,6 +73,13 @@ public class BoardServlet extends HttpServlet {
 					
 				}
 				jsp = "/mvc/boardlist.jsp";
+			}
+			else if (request.getParameter("menu").equals("boarddetail")) {
+				int seq = Integer.parseInt(request.getParameter("seq"));
+				BoardDAO boardDAO = new BoardDAO();
+				BoardDTO boardDTO = boardDAO.getDetail(seq);
+				request.setAttribute("board",boardDTO);
+				jsp = "/mvc/boarddetail.jsp";
 			}
 		}//else
 		RequestDispatcher rd = request.getRequestDispatcher(jsp);

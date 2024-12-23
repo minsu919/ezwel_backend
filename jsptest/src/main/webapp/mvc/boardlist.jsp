@@ -13,12 +13,18 @@
 
 <h1>게시물 리스트</h1>
 <table border=2>
+<tr>
+<td>번호</td>
+<td>제목</td>
+<td>내용</td>
+<td>조회수</td>
+</tr>
 <c:forEach items="${boardlist }" varStatus="vs">
 <tr>
 <td>${vs.current.seq}</td>
-<td><a href="/boardstart?menu=boarddetail&seq=${vs.current.seq}">${vs.current.title}</a></td>
+<td><a href="boardstart?menu=boarddetail&seq=${vs.current.seq}">${vs.current.title}</a></td>
 <td>${vs.current.writer}</td>
-<td>${vs.current.writingTime}</td>
+<td>${vs.current.viewCount}</td>
 </tr>
 </c:forEach>
 

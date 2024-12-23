@@ -11,7 +11,7 @@
 <form action="boardstart" method="post">
 `	<input type=hidden name="menu" value="write">
 	<label for="title">제목</label><input type=text id="title" name="title"><br>
-	<label for="contents">내용</label><textarea rows="3" cols="20" id="contents" name="contents"></textarea><br>
+	<label for="contents">내용</label><textarea rows="5" cols="50" id="contents" name="contents"></textarea><br>
 	<label for="writepw">글암호</label><input type=text id="writepw" name="writepw"><br>
 	<label for="writer">작성자</label><input type=text id="writer" name="writer" value="${sessionid }" readonly><br>
 	<input type=submit value="작성">
