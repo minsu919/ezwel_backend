@@ -7,8 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action = "nameout.jsp">
-이름 : <input type=text name="name"><br>
+<form action = "nameout2.jsp">
+이름 : <input type=text name="name" size= 100><br>
 <input type=submit value="인젝션테스트">
 </form>
 </body>
