@@ -1,7 +1,8 @@
 package mvc;
 
 public class BoardDTO {
-	String title, contents, writer, writingTime;
+	String title, contents, writer, writingTime, file1;
+
 	int seq, writepw, viewCount;
 	
 	public BoardDTO() {
@@ -9,7 +10,7 @@ public class BoardDTO {
 	}
 	
 	public BoardDTO(String title, String contents, String writer, String writingTime, int seq, int writepw,
-			int viewCount) {
+			int viewCount, String file1) {
 		super();
 		this.title = title;
 		this.contents = contents;
@@ -18,14 +19,16 @@ public class BoardDTO {
 		this.seq = seq;
 		this.writepw = writepw;
 		this.viewCount = viewCount;
+		this.file1 = file1;
 	}
 
-	public BoardDTO(String title, String contents, int writepw, String writer) {
+	public BoardDTO(String title, String contents, int writepw, String writer, String file1) {
 		// TODO for insertBoard
 		this.title = title;
 		this.contents = contents;
 		this.writer = writer;
 		this.writepw = writepw;
+		this.file1 = file1;
 	}
 
 	public String getTitle() {
@@ -84,6 +87,14 @@ public class BoardDTO {
 		this.viewCount = viewCount;
 	}
 
+	public String getFile1() {
+		return file1;
+	}
+	
+	public void setFile1(String file1) {
+		this.file1 = file1;
+	}
+	
 	@Override
 	public String toString() {
 		return "BoardDTO [title=" + title + ", contents=" + contents + ", writer=" + writer + ", writingTime="

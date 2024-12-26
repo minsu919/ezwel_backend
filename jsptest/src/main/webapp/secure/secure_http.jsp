@@ -1,3 +1,4 @@
+<%@page import="java.net.URLDecoder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
@@ -14,10 +15,16 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<h1>다운로드 목록을 보여드립니다.</h1>
-<c:forEach items="${filearray }" var="filename">
-<h2><a href='downloadresult?filename=${filename}'>${filename }</a> 파일 다운로드</h2>
+<h1>jsp응답시작</h1>
+<%
+for (Cookie cookie : request.getCookies()){
 
-</c:forEach>
+%>
+<%=cookie.getName() %>:<br>
+<%=URLDecoder.decode(cookie.getValue(), "utf-8") %>
+<%
+}
+%>
+<h1>jsp응답종료</h1>
 </body>
 </html>

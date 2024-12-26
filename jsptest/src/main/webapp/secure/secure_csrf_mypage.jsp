@@ -14,10 +14,14 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<h1>다운로드 목록을 보여드립니다.</h1>
-<c:forEach items="${filearray }" var="filename">
-<h2><a href='downloadresult?filename=${filename}'>${filename }</a> 파일 다운로드</h2>
+<%
+if (session.getAttribute("sessionid") != null){
+	out.println(session.getAttribute("sessionid")+"회원님 안녕하세요");
+	out.println(session.getAttribute("sessionpw")+"암호 사용중입니다.");
+} else {
+	out.println("처리불가");
+}
 
-</c:forEach>
+%>
 </body>
 </html>

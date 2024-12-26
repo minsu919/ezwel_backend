@@ -14,10 +14,10 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<h1>다운로드 목록을 보여드립니다.</h1>
-<c:forEach items="${filearray }" var="filename">
-<h2><a href='downloadresult?filename=${filename}'>${filename }</a> 파일 다운로드</h2>
-
-</c:forEach>
+<form action="secure_csrf_pw.jsp" method="post">
+암호 <input type=password name="pw"><br>
+<input type=hidden name="CSRF_TOKEN" value="${sessionScope.CSRF_TOKEN }">
+<input type=submit value="암호변경">
+</form>
 </body>
 </html>

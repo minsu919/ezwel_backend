@@ -7,9 +7,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 
 import dao.MemberDAO;
 import dto.MemberDTO;
@@ -56,11 +60,41 @@ public class BoardServlet extends HttpServlet {
 				String contents = request.getParameter("contents");
 				String writer = request.getParameter("writer");
 				int writepw = Integer.parseInt(request.getParameter("writepw"));
+				String file1 = request.getParameter("file1");
 				BoardDAO boardDAO = new BoardDAO();
-				BoardDTO boardDTO = new BoardDTO(title, contents, writepw, writer);
+				BoardDTO boardDTO = new BoardDTO(title, contents, writepw, writer, file1);
 				String result  = boardDAO.insertBoard(boardDTO);
+				// 첨부파일 코드
+				
+				String path = "C:\\ezwel\\board\\";
 				jsp = "/mvc/boardstart.jsp";
+				
+				
+				File isDir = new File(path);
+				if (!isDir.isDirectory()) {
+					isDir.mkdir();
+				}
+				
+//				Collection<Part> parts = request.getParts();
+//				for (Part part : parts) {
+//					if (part.getContentType() != null) {
+//						String fileName = part.getSubmittedFileName();
+//						fileName = fileName.toLowerCase();
+//						if (fileName.endsWith(".pdf")){
+//							fileName = 
+//									fileName.substring(0, fileName.indexOf("."))
+//									+ "_" + UUID.randomUUID().toString()
+//									+ fileName.substring(fileName.indexOf("."));
+//							
+//							part.write(fileName);
+//						}
+//					}
+//	
+//				} // for end
+				
+				
 			}
+			
 			else if (request.getParameter("menu").equals("boardlist")) {
 				BoardDAO boardDAO = new BoardDAO();
 				int page = Integer.parseInt(request.getParameter("page"));

@@ -37,13 +37,15 @@ public class BoardDAO {
 		int maxSeq = rs.getInt("max(seq)+1");
 		
 		String insertSQL = 
-		"INSERT INTO board VALUES(?, ?, ?, ?, ?, 0, sysdate)";
+		"INSERT INTO board VALUES(?, ?, ?, ?, ?, 0, sysdate, ?)";
 		PreparedStatement pt = con.prepareStatement(insertSQL);
 		pt.setInt(1, maxSeq);
 		pt.setString(2, dto.getTitle());
 		pt.setString(3, dto.getContents());
 		pt.setString(4, dto.getWriter());
 		pt.setInt(5, dto.getWritepw());
+		pt.setString(6, dto.getFile1());
+
 		int rows = pt.executeUpdate();
 		result = rows + "";
 		System.out.println("insertBoard의 결과는 : " + result);

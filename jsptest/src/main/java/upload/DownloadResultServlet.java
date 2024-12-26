@@ -20,7 +20,9 @@ public class DownloadResultServlet extends HttpServlet {
 		FileInputStream in = new FileInputStream(filePath);
 		byte b[] = new byte[4096];
 		
-		response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+		// 브라우저(8859_1) - 서블릿,jsp(utf-8)
+		fileName = new String(fileName.getBytes("utf-8") , "iso-8859-1"); //스 -2byte a-1byte
+		response.setHeader("Content-Disposition", "attachment; filename=" + fileName);//한글이름허용x
 		OutputStream out = response.getOutputStream();
 		while (true) {
 			int numRead = in.read(b,0,b.length);
