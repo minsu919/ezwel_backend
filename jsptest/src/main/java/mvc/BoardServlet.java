@@ -2,6 +2,7 @@ package mvc;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import dao.MemberDAO;
 import dto.MemberDTO;
 
 @WebServlet("/boardstart")
+@MultipartConfig(location = "c:/ezwel/board") // multipart 인식.(request.getParameter)
 public class BoardServlet extends HttpServlet {
 
 	
@@ -27,12 +29,13 @@ public class BoardServlet extends HttpServlet {
 		String jsp = "";
 		HttpSession session = request.getSession();
 		
+		System.out.println(request.getParameter("menu"));
 		if (request.getParameter("menu") == null) {
-			jsp = "/mvc/boardstart.jsp";
+			jsp = "boardstart.jsp";
 		}
 		else {
 			if (request.getParameter("menu").equals("loginform")) {
-				jsp = "/mvc/loginform.jsp";
+				jsp = "loginform.jsp";
 			}
 			else if (request.getParameter("menu").equals("login") && request.getMethod().equals("POST")) {
 				String id = request.getParameter("id");
@@ -44,55 +47,36 @@ public class BoardServlet extends HttpServlet {
 				}
 				// id 와 pw 파라미터를 읽어온다 --> MemberDAO:getMember() 결과 : MemberDTO --> session 저장 
 				//--> boardstart.jsp 이동
-				jsp = "/mvc/boardstart.jsp";// session 속성 읽어오는 코드 추가
+				jsp = "boardstart.jsp";// session 속성 읽어오는 코드 추가
 			}
 			else if (request.getParameter("menu").equals("logout")) {
 				if (session.getAttribute("sessionid") != null) {
 					session.removeAttribute("sessionid");
 				}
-				jsp = "/mvc/boardstart.jsp";
+				jsp = "boardstart.jsp";
 			}
 			else if (request.getParameter("menu").equals("writingform")) {
-				jsp = "/mvc/writeform.jsp";
+				jsp = "writeform.jsp";
 			}
 			else if (request.getParameter("menu").equals("write") && request.getMethod().equals("POST")) {
 				String title = request.getParameter("title");
 				String contents = request.getParameter("contents");
-				String writer = request.getParameter("writer");
+				//String writer = request.getParameter("writer");
+				String writer = (String)session.getAttribute("sessionid");
 				int writepw = Integer.parseInt(request.getParameter("writepw"));
-				String file1 = request.getParameter("file1");
-				BoardDAO boardDAO = new BoardDAO();
-				BoardDTO boardDTO = new BoardDTO(title, contents, writepw, writer, file1);
-				String result  = boardDAO.insertBoard(boardDTO);
+				BoardDTO boardDTO = new BoardDTO(title, contents, writepw, writer);
 				// 첨부파일 코드
 				
-				String path = "C:\\ezwel\\board\\";
-				jsp = "/mvc/boardstart.jsp";
+				request.setAttribute("dto", boardDTO);
+				RequestDispatcher rd2 = request.getRequestDispatcher("boardupload");
+				rd2.include(request, response);
 				
+				boardDTO = (BoardDTO)request.getAttribute("dto");
 				
-				File isDir = new File(path);
-				if (!isDir.isDirectory()) {
-					isDir.mkdir();
-				}
-				
-//				Collection<Part> parts = request.getParts();
-//				for (Part part : parts) {
-//					if (part.getContentType() != null) {
-//						String fileName = part.getSubmittedFileName();
-//						fileName = fileName.toLowerCase();
-//						if (fileName.endsWith(".pdf")){
-//							fileName = 
-//									fileName.substring(0, fileName.indexOf("."))
-//									+ "_" + UUID.randomUUID().toString()
-//									+ fileName.substring(fileName.indexOf("."));
-//							
-//							part.write(fileName);
-//						}
-//					}
-//	
-//				} // for end
-				
-				
+				BoardDAO boardDAO = new BoardDAO();
+				String result  = boardDAO.insertBoard(boardDTO);
+				response.sendRedirect("http://localhost:8080/jsptest/boardstart");
+				return;
 			}
 			
 			else if (request.getParameter("menu").equals("boardlist")) {
@@ -106,14 +90,14 @@ public class BoardServlet extends HttpServlet {
 					request.setAttribute("count",count);
 					
 				}
-				jsp = "/mvc/boardlist.jsp";
+				jsp = "boardlist.jsp";
 			}
 			else if (request.getParameter("menu").equals("boarddetail")) {
 				int seq = Integer.parseInt(request.getParameter("seq"));
 				BoardDAO boardDAO = new BoardDAO();
 				BoardDTO boardDTO = boardDAO.getDetail(seq);
 				request.setAttribute("board",boardDTO);
-				jsp = "/mvc/boarddetail.jsp";
+				jsp = "boarddetail.jsp";
 			}
 			else if (request.getParameter("menu").equals("boardupdate")) {
 				int seq = Integer.parseInt(request.getParameter("seq"));
@@ -125,7 +109,8 @@ public class BoardServlet extends HttpServlet {
 				dto.setContents(updateContents);
 				String updateResult = boardDAO.updateBoard(dto,seq);
 				System.out.println(updateResult);
-				jsp = "boardstart?menu=boardlist&page=1";
+				jsp = "boardstart.jsp";
+				//jsp = "boardstart?menu=boardlist&page=1";
 			}//else
 			else if (request.getParameter("menu").equals("boarddelete")) {
 				int seq = Integer.parseInt(request.getParameter("seq"));
@@ -133,10 +118,10 @@ public class BoardServlet extends HttpServlet {
 				String delResult = boardDAO.deleteBoard(seq);
 				System.out.println(delResult);
 				
-				jsp = "/mvc/boardstart.jsp";
+				jsp = "boardstart.jsp";
 			}
 		}//else
-		RequestDispatcher rd = request.getRequestDispatcher(jsp);
+		RequestDispatcher rd = request.getRequestDispatcher("/mvc/" + jsp);
 		rd.forward(request, response);
 		
 	}//service end

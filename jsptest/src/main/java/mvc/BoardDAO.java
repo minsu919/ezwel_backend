@@ -51,10 +51,7 @@ public class BoardDAO {
 		System.out.println("insertBoard의 결과는 : " + result);
 		con.close();
 		}
-		catch(NamingException e) {
-			System.out.println("context.xml 데이터베이스설정 미작성");
-		}
-		catch(SQLException e) {
+		catch(Exception e) {
 			System.out.println("db 연결 실패-연결 정보를 확인하세요");
 			e.printStackTrace();//오류발생원인 추적하여 출력
 		}finally {
@@ -139,7 +136,7 @@ public class BoardDAO {
 
 		String selectSQL = 
 		"select seq, title, contents, writer, viewcount, pw,"
-		+ " writingtime"
+		+ " writingtime, file1"
 		+ "	from board "
 		+ " where seq = ?";
 		 
@@ -156,6 +153,7 @@ public class BoardDAO {
 		dto.setViewCount(rs.getInt("viewcount"));
 		dto.setWritingTime(rs.getString("writingtime"));
 		dto.setWritepw(rs.getInt("pw"));
+		dto.setFile1(rs.getString("file1"));
 		}
 		else {
 			//BoardDTO is null

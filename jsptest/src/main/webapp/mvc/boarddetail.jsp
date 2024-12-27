@@ -61,6 +61,7 @@ $(document).ready(function(){
 	<tr><td>작성자</td><td>${board.writer }</td></tr>
 	<tr><td>조회수</td><td>${board.viewCount }</td></tr>
 	<tr><td>작성시간</td><td>${board.writingTime }</td></tr>
+	<tr><td>첨부파일</td><td><a href='boarddownload?filename=${board.file1}'>${board.file1 }</a></td></tr>
 	<tr>
 	<td colspan="2" style="text-align:center">
 	<input type="button" value="수정" id="boardupdatelink">

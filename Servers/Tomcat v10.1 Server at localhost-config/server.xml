@@ -35,6 +35,8 @@
        Documentation at /docs/jndi-resources-howto.html
   -->
   <GlobalNamingResources>
+  
+  	
     <!-- Editable user database that can also be used by
          UserDatabaseRealm to authenticate users
     -->
@@ -142,7 +144,21 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="jsptest" path="/jsptest" reloadable="true" source="org.eclipse.jst.jee.server:jsptest"/><Context docBase="servlettest" path="/servlettest" reloadable="true" source="org.eclipse.jst.jee.server:servlettest"/></Host>
+      <Context docBase="jsptest" path="/jsptest" reloadable="true" source="org.eclipse.jst.jee.server:jsptest">
+	      <Resource driverClassName="oracle.jdbc.driver.OracleDriver"
+	              url="jdbc:oracle:thin:@127.0.0.1:1521:xe"
+	              username="c##jdbc"
+	              password="jdbc"
+	              name="jdbc/mydb"
+	              type="javax.sql.DataSource"
+	              maxActive="4"
+	              maxIdle="2"
+	              maxWait="5000" />
+      </Context>
+      <Context docBase="servlettest" path="/servlettest" reloadable="true" source="org.eclipse.jst.jee.server:servlettest">
+      
+      </Context>
+      </Host>
     </Engine>
   </Service>
 </Server>

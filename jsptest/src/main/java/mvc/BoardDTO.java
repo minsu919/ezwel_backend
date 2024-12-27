@@ -22,13 +22,12 @@ public class BoardDTO {
 		this.file1 = file1;
 	}
 
-	public BoardDTO(String title, String contents, int writepw, String writer, String file1) {
+	public BoardDTO(String title, String contents, int writepw, String writer) {
 		// TODO for insertBoard
 		this.title = title;
 		this.contents = contents;
 		this.writer = writer;
 		this.writepw = writepw;
-		this.file1 = file1;
 	}
 
 	public String getTitle() {
